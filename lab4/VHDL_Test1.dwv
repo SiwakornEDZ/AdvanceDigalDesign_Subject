@@ -19,22 +19,18 @@ begin
  PROCESS (mode,a,b)
     BEGIN
     flag <="0000";
-    result <= "0000";
         CASE mode IS
             WHEN "0000"=> result <= "0000";
             WHEN "0001"=> result <= a;
             WHEN "0010"=> result <= a+1;
 	          if to_integer(a)+ 1 = 16 then 
-	            	result <= "1111";
             	  flag <= "0011";
             	  end if; 
             WHEN "0011"=> result <= a+b;
-             if to_integer(a)+ to_integer(b) = 0 then
-            	  result <= "1111";
+             if to_integer(a)+ to_integer(b) = 0 then 
             	  flag <= "0001";
 	               end if; 
             	if to_integer(a)+ to_integer(b) > 15 then
-            	result <= "1111";
             	  flag <= "0011";
 	               end if;
 	            
@@ -44,11 +40,9 @@ begin
             WHEN "0111"=> result <= NOT b;
             WHEN "1000"=> result <= a-b;
                if to_integer(a)- to_integer(b) = 0 then
-            	  result <= "1111";
             	  flag <= "0001";
 	               end if; 
             	if to_integer(a)- to_integer(b) < 0 then
-            	result <= "1111";
             	  flag <= "0010";
 	               end if;
             WHEN OTHERS =>  NULL;
