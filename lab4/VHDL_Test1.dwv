@@ -1,0 +1,43 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.std_logic_arith.all;
+
+entity d_ff is 
+
+ port(
+		a,b	: in	std_logic_vector(3 downto 0);
+		mode	: in	std_logic_vector(2 downto 0);
+		flag	: out	std_logic_vector(2 downto 0);
+		result	: out	std_logic_vector(3 downto 0)
+	);
+
+end d_ff;
+
+architecture arch1 of d_ff is
+
+begin
+ PROCESS (mode,a,b)
+    BEGIN
+    flag <="000";
+    result <= "0000";
+        CASE mode IS
+            WHEN "000"=> result <= "0000";
+            WHEN "001"=> result <= a;
+            WHEN "010"=> result <= a+1;
+	          if a = "1111" then 
+	            	flag <= "001";
+	            	result <= "1111";
+	            	end if;
+            WHEN "011"=> result <= a+b;
+            	if result = "0000" then
+            	  flag <= "001";
+            	  result <= "1111";
+	               end if;
+            WHEN "100"=> result <= a AND b;
+            WHEN "101"=> result <= a OR b;
+            WHEN "110"=> result <= NOT a;
+            WHEN "111"=> result <= NOT b;
+            WHEN OTHERS => result <= "0000";
+        END CASE;
+    END PROCESS;
+end arch1;
