@@ -18,7 +18,6 @@ architecture arch1 of d_ff is
 begin
  PROCESS (mode,a,b)
     BEGIN
-    flag <="0000";
         CASE mode IS
             WHEN "0000"=> result <= "0000";
             WHEN "0001"=> result <= a;
