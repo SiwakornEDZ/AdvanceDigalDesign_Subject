@@ -6,8 +6,8 @@ entity d_ff is
 
  port(
 		a,b	: in	std_logic_vector(3 downto 0);
-		mode	: in	std_logic_vector(2 downto 0);
-		flag	: out	std_logic_vector(2 downto 0);
+		mode	: in	std_logic_vector(3 downto 0);
+		flag	: out	std_logic_vector(3 downto 0);
 		result	: out	std_logic_vector(3 downto 0)
 	);
 
@@ -18,26 +18,40 @@ architecture arch1 of d_ff is
 begin
  PROCESS (mode,a,b)
     BEGIN
-    flag <="000";
+    flag <="0000";
     result <= "0000";
         CASE mode IS
-            WHEN "000"=> result <= "0000";
-            WHEN "001"=> result <= a;
-            WHEN "010"=> result <= a+1;
-	          if a = "1111" then 
-	            	flag <= "001";
+            WHEN "0000"=> result <= "0000";
+            WHEN "0001"=> result <= a;
+            WHEN "0010"=> result <= a+1;
+	          if to_integer(a)+ 1 = 16 then 
 	            	result <= "1111";
-	            	end if;
-            WHEN "011"=> result <= a+b;
-            	if result = "0000" then
-            	  flag <= "001";
+            	  flag <= "0011";
+            	  end if; 
+            WHEN "0011"=> result <= a+b;
+             if to_integer(a)+ to_integer(b) = 0 then
             	  result <= "1111";
+            	  flag <= "0001";
+	               end if; 
+            	if to_integer(a)+ to_integer(b) > 15 then
+            	result <= "1111";
+            	  flag <= "0011";
 	               end if;
-            WHEN "100"=> result <= a AND b;
-            WHEN "101"=> result <= a OR b;
-            WHEN "110"=> result <= NOT a;
-            WHEN "111"=> result <= NOT b;
-            WHEN OTHERS => result <= "0000";
+	            
+            WHEN "0100"=> result <= a AND b;
+            WHEN "0101"=> result <= a OR b;
+            WHEN "0110"=> result <= NOT a;
+            WHEN "0111"=> result <= NOT b;
+            WHEN "1000"=> result <= a-b;
+               if to_integer(a)- to_integer(b) = 0 then
+            	  result <= "1111";
+            	  flag <= "0001";
+	               end if; 
+            	if to_integer(a)- to_integer(b) < 0 then
+            	result <= "1111";
+            	  flag <= "0010";
+	               end if;
+            WHEN OTHERS =>  NULL;
         END CASE;
     END PROCESS;
 end arch1;
