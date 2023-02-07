@@ -1,0 +1,89 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.std_logic_arith.all;
+
+entity d_ff is 
+
+ port(
+		a,b	: in	std_logic_vector(3 downto 0);
+		mode	: in	std_logic_vector(3 downto 0);
+		flag	: out	std_logic_vector(3 downto 0);
+		result	: out	std_logic_vector(3 downto 0)
+	);
+
+end d_ff;
+
+architecture arch1 of d_ff is
+
+begin
+ PROCESS (mode,a,b)
+    BEGIN
+    flag <= "xxxx";
+ 
+        CASE mode IS
+            WHEN "0000"=> result <= "0000";
+            flag <= "0001";
+            WHEN "0001"=> result <= a;
+             if a = "0000" then
+            	  flag <= "0001";
+            	
+	               end if; 
+            WHEN "0010"=> result <= a+1;
+	          if to_integer(a)+ 1 = 16 then 
+            	  flag <= "0100";
+            	
+            	  end if; 
+            WHEN "0011"=> result <= a+b;
+             if to_integer(a)+ to_integer(b) = 0 then 
+            	  flag <= "0001";
+            	
+	               end if; 
+            	if to_integer(a)+ to_integer(b) > 15 then
+            	  flag <= "0011";
+            	
+	               end if;
+	               
+	            if to_integer(a)+ to_integer(b) = 16 then
+            	  flag <= "0100";
+            	
+	               end if;
+	           
+	            
+            WHEN "0100"=> result <= a AND b;
+            if to_integer(result) = 0 then
+            	  flag <= "0001";
+            	
+	               end if; 
+	              
+	               
+	               
+            WHEN "0101"=> result <= a OR b;
+               if to_integer(result) = 0 then
+            	  flag <= "0001";
+            	
+	               end if; 
+	               
+	               
+            WHEN "0110"=> result <= NOT a;
+             if NOT a = "0000" then
+            	  flag <= "0001";
+            	
+	               end if; 
+            WHEN "0111"=> result <= NOT b;
+             if NOT b = "0000" then
+            	  flag <= "0001";
+            	 
+	               end if; 
+            WHEN "1000"=> result <= a-b;
+               if to_integer(a)- to_integer(b) = 0 then
+            	  flag <= "0001";
+            	
+	               end if; 
+            	if to_integer(a)- to_integer(b) < 0 then
+            	  flag <= "0010";
+            	
+	               end if;
+            WHEN OTHERS =>  NULL;
+        END CASE;
+    END PROCESS;
+end arch1;
