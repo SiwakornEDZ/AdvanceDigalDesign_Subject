@@ -18,30 +18,61 @@ architecture arch1 of d_ff is
 begin
  PROCESS (mode,a,b)
     BEGIN
+    
+    result <= "xxxx";
+    flag <= "xxxx";
         CASE mode IS
             WHEN "0000"=> result <= "0000";
+             		flag <= "0001";
             WHEN "0001"=> result <= a;
+              if to_integer(a) = 0 then
+            		flag <= "0001";
+            		end if;
             WHEN "0010"=> result <= a+1;
-	          if to_integer(a)+ 1 = 16 then 
-            	  flag <= "0011";
-            	  end if; 
+	          if  to_integer(a)+1 = 16 then 
+	            	  flag <= "0100";
+	            	  end if; 
             WHEN "0011"=> result <= a+b;
-             if to_integer(a)+ to_integer(b) = 0 then 
-            	  flag <= "0001";
-	               end if; 
-            	if to_integer(a)+ to_integer(b) > 15 then
-            	  flag <= "0011";
-	               end if;
+             if  to_integer(a)+to_integer(b) = 0 then 
+            	  	flag <= "0001";   
+	         elsif to_integer(a)+to_integer(b) = 16 then
+	         		flag <= "0100";   	
+             elsif to_integer(a)+to_integer(b) > 16 then
+            	  	flag <= "0011";	
+	         end if;
 	            
             WHEN "0100"=> result <= a AND b;
+             if to_integer(a AND b) = 0 then
+             	flag <= "0001";
+
+             	end if;
             WHEN "0101"=> result <= a OR b;
+             if to_integer(a OR b) = 0 then
+             	flag <= "0001";
+             	
+             	end if;
             WHEN "0110"=> result <= NOT a;
+             if to_integer(NOT a) = 0 then
+             	flag <= "0001";
+             	
+             	end if;
             WHEN "0111"=> result <= NOT b;
+             if to_integer(NOT b) = 0 then
+             	flag <= "0001";
+             	
+             	end if;
             WHEN "1000"=> result <= a-b;
                if to_integer(a)- to_integer(b) = 0 then
             	  flag <= "0001";
 	               end if; 
             	if to_integer(a)- to_integer(b) < 0 then
+            	  flag <= "0010";
+	               end if;
+	         WHEN "1001"=> result <= b-a;
+               if to_integer(b)- to_integer(a) = 0 then
+            	  flag <= "0001";
+	               end if; 
+            	if to_integer(b)- to_integer(a) < 0 then
             	  flag <= "0010";
 	               end if;
             WHEN OTHERS =>  NULL;
