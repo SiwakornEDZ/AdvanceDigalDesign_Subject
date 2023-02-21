@@ -1,0 +1,31 @@
+Library ieee;
+Use ieee.std_logic_1164.all;
+
+Entity out123 is
+    port (p_state : in std_logic_vector (3 downto 0);
+    	  d_out : out std_logic_vector (1 downto 0));
+end out123;  
+
+architecture rtl of out123 is
+begin
+	process (p_state)
+	begin
+		case p_state is
+			when "0000" => d_out <= "01";
+			when "0001" => d_out <= "10";
+			when "0010" => d_out <= "01";
+			when "0011" => d_out <= "10";
+			
+			when "0100" => d_out <= "11";
+			when "0101" => d_out <= "01";
+			
+			when "0110" => d_out <= "10";
+			when "0111" => d_out <= "01";
+			when "1000" => d_out <= "10";
+			when "1001" => d_out <= "01";
+			when "1010" => d_out <= "00";
+			when others => NULL;
+		end case;
+	end process;
+end rtl;
+			

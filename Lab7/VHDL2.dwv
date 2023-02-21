@@ -1,0 +1,19 @@
+Library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+
+entity ns_counter is 
+	port ( p_state : in std_logic_vector (3 downto 0);
+		  n_state : out std_logic_vector (3 downto 0));
+end ns_counter;
+
+architecture rtl of ns_counter is
+begin 
+	process (p_state)
+	begin
+		n_state <= p_state+1 ;
+		if (n_state = "1011") then
+		    n_state <= "0000";
+		end if;
+	end process;
+end rtl;
